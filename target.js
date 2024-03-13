@@ -15,7 +15,7 @@ class Target
   // within the target
   clicked(mouse_x, mouse_y)
   {
-    return dist(this.x, this.y, mouse_x, mouse_y) < this.width / 2;
+    return mouse_x > this.x && mouse_x < this.x + this.width && mouse_y > this.y && mouse_y < this.y + this.height;
   }
   
   // Draws the target (i.e., a circle)
@@ -23,13 +23,13 @@ class Target
   draw()
   {
     // Draw target
-    fill(prefixos[label.substring(0, 2)['color']]);                 
+    fill(color(255,0,0));                 
     rect(this.x, this.y, this.width, this.height);
     
     // Draw label
-    textFont("Arial", 12);
+    textFont('monospace', 18);
     fill(color(255,255,255));
     textAlign(CENTER);
-    text(this.label, this.x + this.width/2, this.y + this.height);
+    text(this.label, this.x + this.width/2, this.y + this.height/2);
   }
 }

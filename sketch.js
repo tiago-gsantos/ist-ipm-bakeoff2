@@ -34,7 +34,74 @@ const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
 
 // Variáveis para as legendas
 let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
-
+const prefixos = {
+  'Ba': {
+          'key': 0,
+          'num_columns': 3,
+          'color': '217,216,2',
+          'num_space': 2
+        },
+  'Br': {
+          'key': 1,
+          'num_columns': 2,
+          'color': '225,141,1',
+          'num_space': 0
+        },
+  'Be': {
+          'key': 2,
+          'num_columns': 2,
+          'color': '235,8,1',
+          'num_space': 0
+        },
+  'Bé': {
+          'key': 2,
+          'num_columns': 2,
+          'color': '235,8,1',
+          'num_space': 1
+        },
+  'Bu': {
+          'key': 3,
+          'num_columns': 1,
+          'color': '225,1,196',
+          'num_space': 1
+        },
+  'Bi': {
+          'key': 4,
+          'num_columns': 1,
+          'color': '0,68,224',
+          'num_space': 1
+        },
+  'Bo': {
+          'key': 5,
+          'num_columns': 1,
+          'color': '0,224,30',
+          'num_space': 0
+        },
+  'Bh': {
+          'key': 6,
+          'num_columns': 1,
+          'color': '124,225,0',
+          'num_space': 0
+        },
+  'By': {
+          'key': 7,
+          'num_columns': 1,
+          'color': '227,0,235',
+          'num_space': 0
+        },
+  'Bl': {
+          'key': 8,
+          'num_columns': 1,
+          'color': '235,53,1',
+          'num_space': 0
+        },
+  'Bn': {
+          'key': 9,
+          'num_columns': 1,
+          'color': '200,200,0',
+          'num_space': 1
+        },
+}
 
 
 // Ensures important data is loaded before the program starts
@@ -52,79 +119,7 @@ function setup()
   
   randomizeTrials();         // randomize the trial order at the start of execution
   drawUserIDScreen();        // draws the user start-up screen (student ID and display size)
-
-    let prefixos = {
-    'Ba': {
-            'key': 0,
-            'num_columns': 3,
-            'color': color(217,216,2),
-            'num_space': 2
-          },
-    'Br': {
-            'key': 1,
-            'num_columns': 2,
-            'color': color(225,141,1),
-            'num_space': 0
-          },
-    'Be': {
-            'key': 2,
-            'num_columns': 2,
-            'color': color(235,8,1),
-            'num_space': 0
-          },
-    'Bé': {
-            'key': 2,
-            'num_columns': 2,
-            'color': color(235,8,1),
-            'num_space': 1
-          },
-    'Bu': {
-            'key': 3,
-            'num_columns': 1,
-            'color': color(225,1,196),
-            'num_space': 1
-          },
-    'Bi': {
-            'key': 4,
-            'num_columns': 1,
-            'color': color(0,68,224),
-            'num_space': 1
-          },
-    'Bo': {
-            'key': 5,
-            'num_columns': 1,
-            'color': color(0,224,30),
-            'num_space': 0
-          },
-    'Bh': {
-            'key': 6,
-            'num_columns': 1,
-            'color': color(124,225,0),
-            'num_space': 0
-          },
-    'By': {
-            'key': 7,
-            'num_columns': 1,
-            'color': color(227,0,235),
-            'num_space': 0
-          },
-    'Bl': {
-            'key': 8,
-            'num_columns': 1,
-            'color': color(235,53,1),
-            'num_space': 0
-          },
-    'Bn': {
-            'key': 9,
-            'num_columns': 1,
-            'color': color(200,200,0),
-            'num_space': 1
-          },
-  }
 }
-
-
-  
 
 // Runs every frame and redraws the screen
 function draw()
@@ -149,7 +144,7 @@ function draw()
     fill(color(0,0,0));
     rect(0, height - 40, width, 40);
 
-    textFont("Arial", 20);
+    textFont("monospace", 20);
     fill(color(255,255,255));
     textAlign(CENTER);
     text(legendas.getString(trials[current_trial],1), width/2, height - 20);
@@ -225,8 +220,9 @@ function mousePressed()
       // Check if the user clicked over one of the targets
       if (targets[i].clicked(mouseX, mouseY)) 
       {
+        console.log(targets[i].id);
         // Checks if it was the correct target
-        if (targets[i].id === trials[current_trial] + 1) hits++;
+        if (targets[i].id === trials[current_trial]) hits++;
         else misses++;
         
         current_trial++;              // Move on to the next trial/target
@@ -276,52 +272,52 @@ function continueTest()
 function createTargets(target_width, target_height)
 { 
   let target_x = target_width;
-  let target_y = target_height;
+  let target_y = target_height + 20;
   let total_columns = 0;
-  let id = 1;
+  let palavra_atual;
   for (var i = 0; i < legendasPorPrefixos.length - 5; i++)
   {
     var prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
-    
+
     let c = 0;
-    for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual]['num_space']; j++)
+    for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space; j++)
     { 
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][j], id++);
+      palavra_atual = legendasPorPrefixos[i][j];
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
       targets.push(target);
 
-      c = (c + 1) % prefixos[prefixo_atual]['num_columns'];
-      if(c == prefixos[prefixo_atual]['num_columns'] - 1){
+      if(c == prefixos[prefixo_atual].num_columns - 1){
         target_y += target_height;
       }
+      c = (c + 1) % prefixos[prefixo_atual].num_columns;
     }
     // Posiciona os targets com espaço no sitio certo
-    let screen_height  = display.height * 2.54
-    target_y = screen_height - target_height
+    //let screen_height  = display.height * 2.54
+    target_y = 20 + target_height * 10
     c = 0
     target_x = target_width * (total_columns + 1)
-    for(var k = 0; k < prefixos[prefixo_atual]['num_space']; k++){
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][k - num_space - legendasPorPrefixos[i].length], id++);
+    for(var k = 0; k < prefixos[prefixo_atual].num_space; k++){
+      palavra_atual = legendasPorPrefixos[i][legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space + k];
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
       targets.push(target);
-      c = (c + 1) % prefixos[prefixo_atual]['num_columns'];
-      if(c == prefixos[prefixo_atual]['num_columns'] - 1){
-        target_y += target_height;
-      } 
+      c++;
     }
-    total_columns += prefixos[prefixo_atual]['num_columns'];
-    target_y = target_height;
+    total_columns += prefixos[prefixo_atual].num_columns;
+    target_y = target_height + 20;
     target_x = target_width * (total_columns + 1);
   }
-  screen_width  = display.width * 2.54
-  target_x = screen_width - target_width
-  target_y = target_height
-  for (var i = legendasPorPrefixos.length - 5; i < legendasPorPrefixos.length; i++)
+  
+  target_x = target_width * 10;
+  target_y = target_height + 20;
+
+  for (var l = legendasPorPrefixos.length - 5; l < legendasPorPrefixos.length; l++)
   {
-    for(j = 0; j <  legendasPorPrefixos[i].length; j++){
-      let target = new Target(target_x, target_y, target_width, target_height, legendasPorPrefixos[i][j], id++);
+    for(var m = 0; m <  legendasPorPrefixos[l].length; m++){
+      palavra_atual = legendasPorPrefixos[l][m];
+      let target = new Target(target_x, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
       targets.push(target);
       target_y += target_height;
     }
-
   }
 }
 
@@ -342,7 +338,8 @@ function windowResized()
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
     let target_width    = screen_width / GRID_COLUMNS;                                // sets the target size (will be converted to cm when passed to createTargets)
-    let target_height = screen_height / GRID_ROWS;
+    console.log(screen_height- 60/PPCM);
+    let target_height = (screen_height - 60/PPCM) / GRID_ROWS;
     //let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
     //let vertical_gap   = screen_height - target_size * GRID_ROWS;  // empty space in cm across the y-axis (based on 8 targets per column)
 
@@ -362,7 +359,7 @@ function ordenarPrefixos(){
   
   // Separa pelas primeiras 2 letras
   for(var i = 0; i < cities.length; i++){
-    legendasPorPrefixos[prefixos[cities[i].substring(0, 2)['key']]].push(cities[i]);
+    legendasPorPrefixos[prefixos[cities[i].substring(0, 2)].key].push(cities[i]);
   }
 
   // Para cada prefixo...
@@ -391,5 +388,12 @@ function ordenarPrefixos(){
   }
 }
 
-
+function searchID(palavra){
+  for (let i = 0; i < legendas.getRowCount(); i++) {
+    let cur_city = legendas.getString(i, 'city');
+    if (cur_city === palavra) {
+      return i;
+    }
+  }
+}
 
