@@ -32,11 +32,25 @@ let targets               = [];
 const GRID_ROWS           = 8;      // We divide our 80 targets in a 8x10 grid
 const GRID_COLUMNS        = 10;     // We divide our 80 targets in a 8x10 grid
 
+// Variáveis para as legendas
+let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
+let prefixos = {'Ba': 0,
+                'Br': 1,
+                'Be': 2,
+                'Bé': 2,
+                'Bu': 3,
+                'Bi': 4,
+                'Bo': 5,
+                'Bh': 6,
+                'By': 7,
+                'Bl': 8,
+                'Bn': 9}
+
 // Ensures important data is loaded before the program starts
 function preload()
 {
   // id,name,...
-  legendas = loadTable('legendas.csv', 'csv', 'header');
+  legendas = loadTable('legendas.csv', 'csv', 'header', ordenarPrefixos);
 }
 
 // Runs once at the start
@@ -250,3 +264,42 @@ function windowResized()
     draw_targets = true;
   }
 }
+
+
+function ordenarPrefixos(){
+  // Obtem todos os nomes das cidades num array
+  var cities = legendas.getColumn('city');
+  
+  // Separa pelas primeiras 2 letras
+  for(var i = 0; i < cities.length; i++){
+    legendasPorPrefixos[prefixos[cities[i].substring(0, 2)]].push(cities[i]);
+  }
+
+  // Para cada prefixo...
+  for(var j = 0; j < legendasPorPrefixos.length; j++){
+    // ... ordena por tamanho e por ordem alfabética...
+    legendasPorPrefixos[j].sort((a, b) => {
+      var tamanhoA = a.length;
+      var tamanhoB = b.length;
+  
+      if (tamanhoA !== tamanhoB) {
+        return tamanhoA - tamanhoB;
+      }
+  
+      return a.localeCompare(b);
+    });
+
+    // ... e coloca as palavras com espacos no fim 
+    var palavrasComEspacos = [];
+    for(var k = 0; k < legendasPorPrefixos[j].length; k++){
+      if(legendasPorPrefixos[j][k].includes(' ')){
+        palavrasComEspacos.push(legendasPorPrefixos[j].splice(k, 1)[0]);
+        k--;
+      }
+    }
+    legendasPorPrefixos[j].push(...palavrasComEspacos);
+  }
+}
+
+
+
