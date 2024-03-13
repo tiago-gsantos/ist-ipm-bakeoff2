@@ -34,75 +34,7 @@ const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
 
 // Variáveis para as legendas
 let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
-let prefixos = 
-{
-    'Ba': {
-            'key': 0,
-            'num_columns': 3,
-            'color': color(217,216,2),
-            'num_space': 2
-          },
-    'Br': {
-            'key': 1,
-            'num_columns': 2,
-            'color': color(225,141,1),
-            'num_space': 0
-          },
-    'Be': {
-            'key': 2,
-            'num_columns': 2,
-            'color': color(235,8,1),
-            'num_space': 0
-          },
-    'Bé': {
-            'key': 2,
-            'num_columns': 2,
-            'color': color(235,8,1),
-            'num_space': 1
-          },
-    'Bu': {
-            'key': 3,
-            'num_columns': 1,
-            'color': color(225,1,196),
-            'num_space': 1
-          },
-    'Bi': {
-            'key': 4,
-            'num_columns': 1,
-            'color': color(0,68,224),
-            'num_space': 1
-          },
-    'Bo': {
-            'key': 5,
-            'num_columns': 1,
-            'color': color(0,224,30),
-            'num_space': 0
-          },
-    'Bh': {
-            'key': 6,
-            'num_columns': 1,
-            'color': color(124,225,0),
-            'num_space': 0
-          },
-    'By': {
-            'key': 7,
-            'num_columns': 1,
-            'color': color(227,0,235),
-            'num_space': 0
-          },
-    'Bl': {
-            'key': 8,
-            'num_columns': 1,
-            'color': color(235,53,1),
-            'num_space': 0
-          },
-    'Bn': {
-            'key': 9,
-            'num_columns': 1,
-            'color': "",
-            'num_space': 1
-          },
-}
+
 // Ensures important data is loaded before the program starts
 function preload()
 {
@@ -118,6 +50,78 @@ function setup()
   
   randomizeTrials();         // randomize the trial order at the start of execution
   drawUserIDScreen();        // draws the user start-up screen (student ID and display size)
+  
+
+}
+
+
+  let prefixos = {
+  'Ba': {
+          'key': 0,
+          'num_columns': 3,
+          'color': color(217,216,2),
+          'num_space': 2
+        },
+  'Br': {
+          'key': 1,
+          'num_columns': 2,
+          'color': color(225,141,1),
+          'num_space': 0
+        },
+  'Be': {
+          'key': 2,
+          'num_columns': 2,
+          'color': color(235,8,1),
+          'num_space': 0
+        },
+  'Bé': {
+          'key': 2,
+          'num_columns': 2,
+          'color': color(235,8,1),
+          'num_space': 1
+        },
+  'Bu': {
+          'key': 3,
+          'num_columns': 1,
+          'color': color(225,1,196),
+          'num_space': 1
+        },
+  'Bi': {
+          'key': 4,
+          'num_columns': 1,
+          'color': color(0,68,224),
+          'num_space': 1
+        },
+  'Bo': {
+          'key': 5,
+          'num_columns': 1,
+          'color': color(0,224,30),
+          'num_space': 0
+        },
+  'Bh': {
+          'key': 6,
+          'num_columns': 1,
+          'color': color(124,225,0),
+          'num_space': 0
+        },
+  'By': {
+          'key': 7,
+          'num_columns': 1,
+          'color': color(227,0,235),
+          'num_space': 0
+        },
+  'Bl': {
+          'key': 8,
+          'num_columns': 1,
+          'color': color(235,53,1),
+          'num_space': 0
+        },
+  'Bn': {
+          'key': 9,
+          'num_columns': 1,
+          'color': color(200,200,0),
+          'num_space': 1
+        },
 }
 
 // Runs every frame and redraws the screen
@@ -272,6 +276,7 @@ function createTargets(target_width, target_height)
   let target_x = target_width;
   let target_y = target_height;
   let total_columns = 0;
+  let id = 1;
   for (var i = 0; i < legendasPorPrefixos.length - 5; i++)
   {
     var prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
@@ -279,7 +284,7 @@ function createTargets(target_width, target_height)
     let c = 0;
     for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual]['num_space']; j++)
     { 
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][j]);
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][j], id++);
       targets.push(target);
 
       c = (c + 1) % prefixos[prefixo_atual]['num_columns'];
@@ -287,12 +292,34 @@ function createTargets(target_width, target_height)
         target_y += target_height;
       }
     }
+    // Posiciona os targets com espaço no sitio certo
+    let screen_height  = display.height * 2.54
+    target_y = screen_height - target_height
+    c = 0
+    target_x = target_width * (total_columns + 1)
     for(var k = 0; k < prefixos[prefixo_atual]['num_space']; k++){
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][j]);
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, legendasPorPrefixos[i][k - num_space - legendasPorPrefixos[i].length], id++);
+      targets.push(target);
+      c = (c + 1) % prefixos[prefixo_atual]['num_columns'];
+      if(c == prefixos[prefixo_atual]['num_columns'] - 1){
+        target_y += target_height;
+      } 
     }
     total_columns += prefixos[prefixo_atual]['num_columns'];
     target_y = target_height;
     target_x = target_width * (total_columns + 1);
+  }
+  screen_width  = display.width * 2.54
+  target_x = screen_width - target_width
+  target_y = target_height
+  for (var i = legendasPorPrefixos.length - 5; i < legendasPorPrefixos.length; i++)
+  {
+    for(j = 0; j <  legendasPorPrefixos[i].length; j++){
+      let target = new Target(target_x, target_y, target_width, target_height, legendasPorPrefixos[i][j], id++);
+      targets.push(target);
+      target_y += target_height;
+    }
+
   }
 }
 

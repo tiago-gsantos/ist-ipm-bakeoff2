@@ -1,11 +1,12 @@
 // Target class (position and width)
 class Target
 {
-  constructor(x, y, w, l, id)
+  constructor(x, y, w, h, l, id)
   {
     this.x      = x;
     this.y      = y;
     this.width  = w;
+    this.height = h;
     this.label  = l;
     this.id     = id;
   }
@@ -22,13 +23,13 @@ class Target
   draw()
   {
     // Draw target
-    fill(color(155,155,155));                 
-    circle(this.x, this.y, this.width);
+    fill(prefixos[label.substring(0, 2)['color']]);                 
+    rect(this.x, this.y, this.width, this.height);
     
     // Draw label
     textFont("Arial", 12);
     fill(color(255,255,255));
     textAlign(CENTER);
-    text(this.label, this.x, this.y);
+    text(this.label, this.x + this.width/2, this.y + this.height);
   }
 }
