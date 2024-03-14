@@ -76,31 +76,31 @@ const prefixos = {
   'Bo': {
           'key': 5,
           'num_columns': 1,
-          'color': {'r': 0, 'g': 255, 'b': 0},
+          'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'Bh': {
           'key': 6,
           'num_columns': 1,
-          'color': {'r': 255, 'g': 255, 'b': 0},
+          'color': {'r': 0, 'g': 125, 'b': 0},
           'num_space': 0
         },
   'By': {
           'key': 7,
           'num_columns': 1,
-          'color': {'r': 255, 'g': 153, 'b': 51},
+          'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'Bl': {
           'key': 8,
           'num_columns': 1,
-          'color': {'r': 255, 'g': 0, 'b': 0},
+          'color': {'r': 0, 'g': 125, 'b': 0},
           'num_space': 0
         },
   'Bn': {
           'key': 9,
           'num_columns': 1,
-          'color': {'r': 255, 'g': 0, 'b': 255},
+          'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 1
         },
 }
@@ -155,24 +155,39 @@ function draw()
       rect(rect_x, rect_y + target_height, rect_width, rect_height - 2*target_height + 1);
       stroke(0);
       
-      fill(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b))
-      textFont('monospace', 35);
-      textStyle(BOLD);
-      textAlign(CENTER);
-      text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2, 20 + target_height/2 + 15);
+      if(j != legendasPorPrefixos.length - 5){
+        fill(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b));
+        textFont('monospace', 35);
+        textStyle(BOLD);
+        textAlign(CENTER);
+        text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2, 20 + target_height/2 + 15);
+      }
 
       total_columns += prefixos[prefixo_atual].num_columns;
     }
     
-    
-    
+    textFont('monospace', 25);
+    textStyle(BOLD);
+    textAlign(CENTER);
+    fill(color(prefixos['Bo'].color.r, prefixos['Bo'].color.g, prefixos['Bo'].color.b));
+    text("Bo Bh By\nBl Bn", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
+    fill(color(prefixos['Bh'].color.r, prefixos['Bh'].color.g, prefixos['Bh'].color.b));
+    text("   Bh   \nBl   ", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
+
     fill(color(0,0,0));
     rect(0, height - 40, width, 40);
 
+    var label = legendas.getString(trials[current_trial],1);
+    
     textFont("monospace", 20);
-    fill(color(255,255,255));
     textAlign(CENTER);
-    text(legendas.getString(trials[current_trial],1), width/2, height - 20);
+    
+    var prefixo_label = label.substring(0, 2);
+    fill(prefixos[prefixo_label].color.r, prefixos[prefixo_label].color.g, prefixos[prefixo_label].color.b);
+    text(label, width/2, height - 15);
+
+    fill(color(255,255,255));
+    text("  " + label.substring(2), width/2, height - 15);
   }
 }
 
@@ -245,7 +260,6 @@ function mousePressed()
       // Check if the user clicked over one of the targets
       if (targets[i].clicked(mouseX, mouseY)) 
       {
-        console.log(targets[i].id);
         // Checks if it was the correct target
         if (targets[i].id === trials[current_trial]) hits++;
         else misses++;
