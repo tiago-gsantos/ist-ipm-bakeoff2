@@ -38,67 +38,67 @@ const prefixos = {
   'Ba': {
           'key': 0,
           'num_columns': 3,
-          'color': '217,216,2',
+          'color': {'r': 255, 'g': 255, 'b': 0},
           'num_space': 2
         },
   'Br': {
           'key': 1,
           'num_columns': 2,
-          'color': '225,141,1',
+          'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Be': {
           'key': 2,
           'num_columns': 2,
-          'color': '235,8,1',
+          'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 0
         },
   'Bé': {
           'key': 2,
           'num_columns': 2,
-          'color': '235,8,1',
+          'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 1
         },
   'Bu': {
           'key': 3,
           'num_columns': 1,
-          'color': '225,1,196',
+          'color': {'r': 255, 'g': 0, 'b': 255},
           'num_space': 1
         },
   'Bi': {
           'key': 4,
           'num_columns': 1,
-          'color': '0,68,224',
+          'color': {'r': 0, 'g': 230, 'b': 255},
           'num_space': 1
         },
   'Bo': {
           'key': 5,
           'num_columns': 1,
-          'color': '0,224,30',
+          'color': {'r': 0, 'g': 255, 'b': 0},
           'num_space': 0
         },
   'Bh': {
           'key': 6,
           'num_columns': 1,
-          'color': '124,225,0',
+          'color': {'r': 255, 'g': 255, 'b': 0},
           'num_space': 0
         },
   'By': {
           'key': 7,
           'num_columns': 1,
-          'color': '227,0,235',
+          'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Bl': {
           'key': 8,
           'num_columns': 1,
-          'color': '235,53,1',
+          'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 0
         },
   'Bn': {
           'key': 9,
           'num_columns': 1,
-          'color': '200,200,0',
+          'color': {'r': 255, 'g': 0, 'b': 255},
           'num_space': 1
         },
 }
@@ -283,7 +283,7 @@ function createTargets(target_width, target_height)
     for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space; j++)
     { 
       palavra_atual = legendasPorPrefixos[i][j];
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual, prefixos[prefixo_atual].color, searchID(palavra_atual));
       targets.push(target);
 
       if(c == prefixos[prefixo_atual].num_columns - 1){
@@ -298,7 +298,7 @@ function createTargets(target_width, target_height)
     target_x = target_width * (total_columns + 1)
     for(var k = 0; k < prefixos[prefixo_atual].num_space; k++){
       palavra_atual = legendasPorPrefixos[i][legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space + k];
-      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
+      let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual,prefixos[prefixo_atual].color, searchID(palavra_atual));
       targets.push(target);
       c++;
     }
@@ -312,9 +312,11 @@ function createTargets(target_width, target_height)
 
   for (var l = legendasPorPrefixos.length - 5; l < legendasPorPrefixos.length; l++)
   {
+    var prefixo_atual = legendasPorPrefixos[l][0].substring(0, 2);
+
     for(var m = 0; m <  legendasPorPrefixos[l].length; m++){
       palavra_atual = legendasPorPrefixos[l][m];
-      let target = new Target(target_x, target_y, target_width, target_height, palavra_atual, searchID(palavra_atual));
+      let target = new Target(target_x, target_y, target_width, target_height, palavra_atual, prefixos[prefixo_atual].color, searchID(palavra_atual));
       targets.push(target);
       target_y += target_height;
     }
