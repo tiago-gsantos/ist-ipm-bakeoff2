@@ -179,10 +179,11 @@ function draw()
 
     var label = legendas.getString(trials[current_trial],1);
     
-    textFont("monospace", 20);
+    textFont("monospace", 25);
     textAlign(CENTER);
     
     var prefixo_label = label.substring(0, 2);
+    
     fill(prefixos[prefixo_label].color.r, prefixos[prefixo_label].color.g, prefixos[prefixo_label].color.b);
     text(label, width/2, height - 15);
 
