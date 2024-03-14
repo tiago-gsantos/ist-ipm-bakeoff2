@@ -31,6 +31,8 @@ let attempt               = 0;      // users complete each test twice to account
 let targets               = [];
 const GRID_ROWS           = 11;      // We divide our 80 targets in a 8x10 grid
 const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
+let target_width;
+let target_height;
 
 // Variáveis para as legendas
 let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
@@ -138,9 +140,32 @@ function draw()
     // Draw all targets
 	  for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
-    // Draws the target label to be selected in the current trial. We include
-    // a black rectangle behind the trial label for optimal contrast in case
-    // you change the background colour of the sketch (DO NOT CHANGE THESE!)
+    var total_columns = 0;
+    for (var j = 0; j < legendasPorPrefixos.length-4; j++){
+      var prefixo_atual = legendasPorPrefixos[j][0].substring(0, 2);
+      var rect_x = target_width * (1 + total_columns) + 2;
+      var rect_y = 20 + 2;
+      var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 5;
+      var rect_height = (target_height * 11) - 5;
+      noFill();
+      stroke(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b));
+      strokeWeight(4);
+      rect(rect_x, rect_y, rect_width, rect_height);
+
+      rect(rect_x, rect_y + target_height, rect_width, rect_height - 2*target_height + 1);
+      stroke(0);
+      
+      fill(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b))
+      textFont('monospace', 35);
+      textStyle(BOLD);
+      textAlign(CENTER);
+      text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2, 20 + target_height/2 + 15);
+
+      total_columns += prefixos[prefixo_atual].num_columns;
+    }
+    
+    
+    
     fill(color(0,0,0));
     rect(0, height - 40, width, 40);
 
@@ -269,7 +294,7 @@ function continueTest()
 }
 
 // Creates and positions the UI targets
-function createTargets(target_width, target_height)
+function createTargets()
 { 
   let target_x = target_width;
   let target_y = target_height + 20;
@@ -339,15 +364,14 @@ function windowResized()
     // Below we find out out white space we can have between 2 cm targets
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
-    let target_width    = screen_width / GRID_COLUMNS;                                // sets the target size (will be converted to cm when passed to createTargets)
-    console.log(screen_height- 60/PPCM);
-    let target_height = (screen_height - 60/PPCM) / GRID_ROWS;
+    target_width    = (screen_width / GRID_COLUMNS) * PPCM;                                // sets the target size (will be converted to cm when passed to createTargets)
+    target_height = ((screen_height - 60/PPCM) / GRID_ROWS) * PPCM;
     //let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
     //let vertical_gap   = screen_height - target_size * GRID_ROWS;  // empty space in cm across the y-axis (based on 8 targets per column)
 
     // Creates and positions the UI targets according to the white space defined above (in cm!)
     // 80 represent some margins around the display (e.g., for text)
-    createTargets(target_width * PPCM, target_height * PPCM);
+    createTargets();
 
     // Starts drawing targets immediately after we go fullscreen
     draw_targets = true;
@@ -398,4 +422,3 @@ function searchID(palavra){
     }
   }
 }
-
