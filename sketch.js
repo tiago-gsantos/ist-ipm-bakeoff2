@@ -59,7 +59,7 @@ const prefixos = {
           'key': 1,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
-          'num_space': 1
+          'num_space': 0
         },
   'Bu': {
           'key': 3,
@@ -145,7 +145,7 @@ function draw()
     textAlign(LEFT);
     push();
     rotate(-HALF_PI);
-    text("Tamanho da palavra", -(20 + target_height * 7), 60);
+    text("Ordem Alfabética", -(20 + target_height * 7), 60);
     textSize(35);
     text("<------------------------------------------------", -(20 + target_height*10 - target_height/2), 3*target_width/4);
     
@@ -156,7 +156,7 @@ function draw()
     
     var total_columns = 0;
     for (var j = 0; j < legendasPorPrefixos.length-4; j++){
-      var prefixo_atual = legendasPorPrefixos[j][0].substring(0, 2);
+      var prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
       var rect_x = target_width * (1 + total_columns) + 2;
       var rect_y = 20 + 2;
       var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 5;
@@ -422,13 +422,6 @@ function ordenarPrefixos(){
   for(var j = 0; j < legendasPorPrefixos.length; j++){
     // ... ordena por tamanho e por ordem alfabética...
     legendasPorPrefixos[j].sort((a, b) => {
-      var tamanhoA = a.length;
-      var tamanhoB = b.length;
-  
-      if (tamanhoA !== tamanhoB) {
-        return tamanhoA - tamanhoB;
-      }
-  
       return a.localeCompare(b);
     });
 
