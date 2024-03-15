@@ -136,7 +136,14 @@ function draw()
     fill(color(255,255,255));
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
-        
+    text("Palavras", 20, height-80);
+    text("com Espaços", 5, height-60);
+    
+    push();
+    rotate(-HALF_PI);
+    text("Tamanho da palavra", -500, 60);
+    text("<--------------------------------------------------------------------------------------------------------------", -680, 100)
+    pop();
     // Draw all targets
 	  for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
@@ -189,6 +196,7 @@ function draw()
 
     fill(color(255,255,255));
     text("  " + label.substring(2), width/2, height - 15);
+    
   }
 }
 
