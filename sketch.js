@@ -270,7 +270,10 @@ function mousePressed()
       if (targets[i].clicked(mouseX, mouseY)) 
       {
         // Checks if it was the correct target
-        if (targets[i].id === trials[current_trial]) hits++;
+        if (targets[i].id === trials[current_trial]){
+          targets[i].isclicked = true;
+          hits++;
+        }
         else misses++;
         
         current_trial++;              // Move on to the next trial/target
@@ -312,8 +315,12 @@ function continueTest()
   current_trial = 0;
   continue_button.remove();
   
+  for(var t = 0; t < targets.length; t++){
+    targets[t].isclicked = false;
+  }
+  
   // Shows the targets again
-  draw_targets = true; 
+  draw_targets = true;
 }
 
 // Creates and positions the UI targets
