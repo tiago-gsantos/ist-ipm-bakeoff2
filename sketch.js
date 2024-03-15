@@ -136,14 +136,21 @@ function draw()
     fill(color(255,255,255));
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
-    text("Palavras", 20, height-80);
-    text("com Espaços", 5, height-60);
     
+    textStyle(BOLD);
+    textSize(20);
+    textAlign(CENTER);
+    text("Palavras\ncom Espaços", target_width/2, height-40-(target_height/2));
+    
+    textAlign(LEFT);
     push();
     rotate(-HALF_PI);
-    text("Tamanho da palavra", -500, 60);
-    text("<--------------------------------------------------------------------------------------------------------------", -680, 100)
+    text("Tamanho da palavra", -(20 + target_height * 7), 60);
+    textSize(35);
+    text("<------------------------------------------------", -(20 + target_height*10 - target_height/2), 3*target_width/4);
+    
     pop();
+
     // Draw all targets
 	  for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
@@ -176,9 +183,9 @@ function draw()
     textFont('monospace', 25);
     textStyle(BOLD);
     textAlign(CENTER);
-    fill(color(prefixos['Bo'].color.r, prefixos['Bo'].color.g, prefixos['Bo'].color.b));
+    fill(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
     text("Bo Bh By\nBl Bn", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
-    fill(color(prefixos['Bh'].color.r, prefixos['Bh'].color.g, prefixos['Bh'].color.b));
+    fill(color(prefixos.Bh.color.r, prefixos.Bh.color.g, prefixos.Bh.color.b));
     text("   Bh   \nBl   ", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
 
     fill(color(0,0,0));
@@ -188,15 +195,8 @@ function draw()
     
     textFont("monospace", 25);
     textAlign(CENTER);
-    
-    var prefixo_label = label.substring(0, 2);
-    
-    fill(prefixos[prefixo_label].color.r, prefixos[prefixo_label].color.g, prefixos[prefixo_label].color.b);
+    fill(255);
     text(label, width/2, height - 15);
-
-    fill(color(255,255,255));
-    text("  " + label.substring(2), width/2, height - 15);
-    
   }
 }
 
