@@ -10,6 +10,7 @@ class Target
     this.label  = l;
     this.id     = id;
     this.color  = c;
+    this.isclicked = false;
   }
   
   // Checks if a mouse click took place
@@ -26,7 +27,12 @@ class Target
     // Draw target
     stroke(255);
     strokeWeight(1);
-    fill(color(0,0,0));                 
+    if(this.isclicked){
+      fill(color(80, 80, 80)); 
+    }
+    else{
+      fill(color(0,0,0));  
+    }
     rect(this.x, this.y, this.width, this.height);
     strokeWeight(0);
     // Draw label
