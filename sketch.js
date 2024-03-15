@@ -44,21 +44,21 @@ const prefixos = {
           'num_space': 2
         },
   'Br': {
+          'key': 4,
+          'num_columns': 2,
+          'color': {'r': 0, 'g': 230, 'b': 255},
+          'num_space': 0
+        },
+  'Be': {
           'key': 1,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
-  'Be': {
-          'key': 2,
-          'num_columns': 2,
-          'color': {'r': 255, 'g': 0, 'b': 0},
-          'num_space': 0
-        },
   'Bé': {
-          'key': 2,
+          'key': 1,
           'num_columns': 2,
-          'color': {'r': 255, 'g': 0, 'b': 0},
+          'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 1
         },
   'Bu': {
@@ -68,9 +68,9 @@ const prefixos = {
           'num_space': 1
         },
   'Bi': {
-          'key': 4,
+          'key': 2,
           'num_columns': 1,
-          'color': {'r': 0, 'g': 230, 'b': 255},
+          'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 1
         },
   'Bo': {
