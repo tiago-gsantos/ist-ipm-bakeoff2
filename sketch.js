@@ -422,6 +422,13 @@ function ordenarPrefixos(){
   for(var j = 0; j < legendasPorPrefixos.length; j++){
     // ... ordena por tamanho e por ordem alfabética...
     legendasPorPrefixos[j].sort((a, b) => {
+      var tamanhoA = a.length;
+      var tamanhoB = b.length;
+  
+      if (tamanhoA !== tamanhoB) {
+        return tamanhoA - tamanhoB;
+      }
+  
       return a.localeCompare(b);
     });
 
