@@ -31,7 +31,7 @@ let attempt               = 0;      // users complete each test twice to account
 let targets               = [];
 const GRID_ROWS           = 11;      // We divide our 80 targets in a 8x10 grid
 const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
-let target_width = 2.6;
+let target_width = 2.5;
 let target_height = 1.3;
 let horizontal_gap;
 let vertical_gap;
@@ -113,12 +113,15 @@ const prefixos = {
         },
 }
 
+let sound;
 
 // Ensures important data is loaded before the program starts
 function preload()
 {
   // id,name,...
   legendas = loadTable('legendas.csv', 'csv', 'header', ordenarPrefixos);
+  soundFormats('mp3');
+  sound = loadSound('som_ipm.mp3');
 }
 
 // Runs once at the start
@@ -146,7 +149,7 @@ function draw()
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
     
     textStyle(BOLD);
-    textSize(20);
+    textSize(17);
     textAlign(CENTER);
     text("Palavras\ncom Espaços", horizontal_gap/2 + target_width/2, height - vertical_gap/2 - target_height/2);
     
@@ -201,7 +204,7 @@ function draw()
     line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*9, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*9);
     strokeWeight(0);
     
-    textFont('monospace', 25);
+    textFont('monospace', 23);
     textStyle(BOLD);
     textAlign(CENTER);
     fill(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
@@ -296,6 +299,7 @@ function mousePressed()
         else misses++;
         
         current_trial++;              // Move on to the next trial/target
+        sound.play();
         break;
       }
     }

@@ -36,7 +36,7 @@ class Target
     rect(this.x, this.y, this.width, this.height);
     strokeWeight(0);
     // Draw label
-    textFont('monospace', 18);
+    textFont('monospace', 13);
     textAlign(CENTER);
     
     fill(color(this.color.r, this.color.g, this.color.b));
