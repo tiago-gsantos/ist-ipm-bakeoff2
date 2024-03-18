@@ -6,12 +6,24 @@ let student_ID, display_size;                                          // User i
 // Prints the initial UI that prompts that ask for student ID and screen size
 function drawUserIDScreen()
 { 
-  background(color(0,0,0));                                          // sets background to black
-  
-  // Text prompt
-  main_text = createDiv("Insert your student number and display size");
+  background(0);
+
+  let main_text = createP("Insira o número do seu estudante e o tamanho do display");
   main_text.id('main_text');
   main_text.position(10, 10);
+
+  // Segundo texto
+  let new_text = createP("Bem vindo/a ao nosso protótipo! Antes de carregares no primeiro target o tempo ainda não começou a contar, por isso, tens tempo para analisar o desenho. Os alvos estão orgazidos em secções tendo em conta a ordem alfabética das primeiras duas letras. Boa sorte!");
+  
+  new_text.position(10, 300);
+  new_text.style('color', 'white');
+  //new_text.style('text-align', 'center');
+  new_text.id('new_text');
+  new_text.style('font-size', '20px');
+  new_text.style('margin', '24px');
+  new_text.style('font-weight', 'lighter');
+
+  
   
   // Input forms:
   // 1. Student ID
@@ -73,6 +85,7 @@ function startTest()
 
     // Deletes UI elements
     main_text.remove();
+    new_text.remove();
     student_ID_form.remove();
     student_ID_label.remove();
     display_size_form.remove();

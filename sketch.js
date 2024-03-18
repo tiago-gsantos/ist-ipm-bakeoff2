@@ -84,7 +84,7 @@ const prefixos = {
   'Bh': {
           'key': 6,
           'num_columns': 1,
-          'color': {'r': 0, 'g': 125, 'b': 0},
+          'color': {'r': 230, 'g': 0, 'b': 109},
           'num_space': 0
         },
   'By': {
@@ -96,7 +96,7 @@ const prefixos = {
   'Bl': {
           'key': 8,
           'num_columns': 1,
-          'color': {'r': 0, 'g': 125, 'b': 0},
+          'color': {'r': 230, 'g': 0, 'b': 109},
           'num_space': 0
         },
   'Bn': {
