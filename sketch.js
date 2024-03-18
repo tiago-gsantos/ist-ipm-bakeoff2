@@ -31,8 +31,10 @@ let attempt               = 0;      // users complete each test twice to account
 let targets               = [];
 const GRID_ROWS           = 11;      // We divide our 80 targets in a 8x10 grid
 const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
-let target_width;
-let target_height;
+let target_width = 3;
+let target_height = 1.5;
+let horizontal_gap;
+let vertical_gap;
 
 // Variáveis para as legendas
 let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
@@ -157,10 +159,10 @@ function draw()
     var total_columns = 0;
     for (var j = 0; j < legendasPorPrefixos.length-4; j++){
       var prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
-      var rect_x = target_width * (1 + total_columns) + 2;
-      var rect_y = 20 + 2;
-      var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 5;
-      var rect_height = (target_height * 11) - 5;
+      var rect_x = horizontal_gap/2 + target_width * (1 + total_columns);
+      var rect_y = vertical_gap/2;
+      var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 2;
+      var rect_height = target_height * 11;
       noFill();
       stroke(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b));
       strokeWeight(4);
@@ -174,7 +176,7 @@ function draw()
         textFont('monospace', 35);
         textStyle(BOLD);
         textAlign(CENTER);
-        text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2, 20 + target_height/2 + 15);
+        text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 + 15);
       }
 
       total_columns += prefixos[prefixo_atual].num_columns;
@@ -184,19 +186,17 @@ function draw()
     textStyle(BOLD);
     textAlign(CENTER);
     fill(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
-    text("Bo Bh By\nBl Bn", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
+    text("Bo Bh By\nBl Bn", (10 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 -5);
     fill(color(prefixos.Bh.color.r, prefixos.Bh.color.g, prefixos.Bh.color.b));
-    text("   Bh   \nBl   ", (10 * target_width) + target_width/2, 20 + target_height/2 -5);
+    text("   Bh   \nBl   ", (10 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 -5);
 
     fill(color(0,0,0));
     rect(0, height - 40, width, 40);
-
-    var label = legendas.getString(trials[current_trial],1);
     
-    textFont("monospace", 25);
+    textFont("Arial", 20);
     textAlign(CENTER);
     fill(255);
-    text(label, width/2, height - 15);
+    text(legendas.getString(trials[current_trial],1), width/2, height - 20);
   }
 }
 
@@ -326,8 +326,8 @@ function continueTest()
 // Creates and positions the UI targets
 function createTargets()
 { 
-  let target_x = target_width;
-  let target_y = target_height + 20;
+  let target_x = target_width + horizontal_gap/2;
+  let target_y = target_height + vertical_gap/2;
   let total_columns = 0;
   let palavra_atual;
   for (var i = 0; i < legendasPorPrefixos.length - 5; i++)
@@ -348,9 +348,9 @@ function createTargets()
     }
     // Posiciona os targets com espaço no sitio certo
     //let screen_height  = display.height * 2.54
-    target_y = 20 + target_height * 10
+    target_y = vertical_gap/2 + target_height * 10
     c = 0
-    target_x = target_width * (total_columns + 1)
+    target_x = horizontal_gap/2 + target_width * (total_columns + 1)
     for(var k = 0; k < prefixos[prefixo_atual].num_space; k++){
       palavra_atual = legendasPorPrefixos[i][legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space + k];
       let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual,prefixos[prefixo_atual].color, searchID(palavra_atual));
@@ -358,12 +358,12 @@ function createTargets()
       c++;
     }
     total_columns += prefixos[prefixo_atual].num_columns;
-    target_y = target_height + 20;
-    target_x = target_width * (total_columns + 1);
+    target_y = target_height + vertical_gap/2;
+    target_x = horizontal_gap/2 + target_width * (total_columns + 1);
   }
   
-  target_x = target_width * 10;
-  target_y = target_height + 20;
+  target_x = horizontal_gap/2 + target_width * 10;
+  target_y = vertical_gap/2 + target_height;
 
   for (var l = legendasPorPrefixos.length - 5; l < legendasPorPrefixos.length; l++)
   {
@@ -394,11 +394,11 @@ function windowResized()
     // Below we find out out white space we can have between 2 cm targets
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
-    target_width    = (screen_width / GRID_COLUMNS) * PPCM;                                // sets the target size (will be converted to cm when passed to createTargets)
-    target_height = ((screen_height - 60/PPCM) / GRID_ROWS) * PPCM;
-    //let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
-    //let vertical_gap   = screen_height - target_size * GRID_ROWS;  // empty space in cm across the y-axis (based on 8 targets per column)
-
+    
+    horizontal_gap = (screen_width - target_width * GRID_COLUMNS) * PPCM;// empty space in cm across the x-axis (based on 10 targets per row)
+    vertical_gap   = (screen_height - target_height * GRID_ROWS) * PPCM;  // empty space in cm across the y-axis (based on 8 targets per column)
+    target_width *= PPCM;
+    target_height *= PPCM;
     // Creates and positions the UI targets according to the white space defined above (in cm!)
     // 80 represent some margins around the display (e.g., for text)
     createTargets();
