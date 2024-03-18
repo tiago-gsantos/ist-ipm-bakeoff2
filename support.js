@@ -13,7 +13,7 @@ function drawUserIDScreen()
   main_text.position(10, 10);
 
   // Segundo texto
-  let new_text = createP("Bem vindo/a ao nosso protótipo! Antes de carregares no primeiro target o tempo ainda não começou a contar, por isso, tens tempo para analisar o desenho. Os alvos estão orgazidos em secções tendo em conta a ordem alfabética das primeiras duas letras. Boa sorte!");
+  let new_text = createP("Bem vindo/a ao nosso protótipo! Antes de carregares no primeiro target o tempo ainda não começou a contar, por isso, tens tempo para analisar o desenho. Os alvos estão orgazidos em secções tendo em conta o tamanho das primeiras duas letras. Boa sorte!");
   
   new_text.position(10, 300);
   new_text.style('color', 'white');

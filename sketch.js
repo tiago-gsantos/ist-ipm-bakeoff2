@@ -147,7 +147,7 @@ function draw()
     textAlign(LEFT);
     push();
     rotate(-HALF_PI);
-    text("Ordem Alfabética", -(20 + target_height * 7), 60);
+    text("Tamanho da palavra", -(20 + target_height * 7), 60);
     textSize(35);
     text("<------------------------------------------------", -(20 + target_height*10 - target_height/2), 3*target_width/4);
     
