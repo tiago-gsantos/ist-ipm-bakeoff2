@@ -43,6 +43,6 @@ class Target
     text(this.label, this.x + this.width/2, this.y + this.height/2 + 5);
     
     fill(color(255, 255, 255));
-    text(this.label.substring(2), this.x + this.width/2 + textWidth(this.label.substring(0, 1)), this.y + this.height/2 + 5);
+    text("   " + this.label.substring(3), this.x + this.width/2, this.y + this.height/2 + 5);
   }
 }

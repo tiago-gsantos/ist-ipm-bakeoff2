@@ -31,76 +31,82 @@ let attempt               = 0;      // users complete each test twice to account
 let targets               = [];
 const GRID_ROWS           = 11;      // We divide our 80 targets in a 8x10 grid
 const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
-let target_width = 3;
-let target_height = 1.5;
+let target_width = 2.6;
+let target_height = 1.3;
 let horizontal_gap;
 let vertical_gap;
 
 // Variáveis para as legendas
-let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
+let legendasPorPrefixos = Array.from({ length: 11 }, () => []);
 const prefixos = {
-  'Ba': {
+  'Bar': {
           'key': 0,
-          'num_columns': 3,
+          'num_columns': 1,
+          'color': {'r': 255, 'g': 255, 'b': 0},
+          'num_space': 0
+        },
+  'Ba': {
+          'key': 1,
+          'num_columns': 2,
           'color': {'r': 255, 'g': 255, 'b': 0},
           'num_space': 2
         },
   'Br': {
-          'key': 4,
+          'key': 5,
           'num_columns': 2,
           'color': {'r': 0, 'g': 230, 'b': 255},
           'num_space': 0
         },
   'Be': {
-          'key': 1,
+          'key': 2,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Bé': {
-          'key': 1,
+          'key': 2,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Bu': {
-          'key': 3,
+          'key': 4,
           'num_columns': 1,
           'color': {'r': 255, 'g': 0, 'b': 255},
           'num_space': 1
         },
   'Bi': {
-          'key': 2,
+          'key': 3,
           'num_columns': 1,
           'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 1
         },
   'Bo': {
-          'key': 5,
+          'key': 6,
           'num_columns': 1,
           'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'Bh': {
-          'key': 6,
+          'key': 7,
           'num_columns': 1,
           'color': {'r': 230, 'g': 0, 'b': 109},
           'num_space': 0
         },
   'By': {
-          'key': 7,
+          'key': 8,
           'num_columns': 1,
           'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'Bl': {
-          'key': 8,
+          'key': 9,
           'num_columns': 1,
           'color': {'r': 230, 'g': 0, 'b': 109},
           'num_space': 0
         },
   'Bn': {
-          'key': 9,
+          'key': 10,
           'num_columns': 1,
           'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 1
@@ -129,7 +135,7 @@ function setup()
 function draw()
 {
   if (draw_targets && attempt < 2)
-  {     
+  {
     // The user is interacting with the 6x3 target grid
     background(color(0,0,0));        // sets background to black
     
@@ -142,23 +148,29 @@ function draw()
     textStyle(BOLD);
     textSize(20);
     textAlign(CENTER);
-    text("Palavras\ncom Espaços", target_width/2, height-40-(target_height/2));
+    text("Palavras\ncom Espaços", horizontal_gap/2 + target_width/2, height - vertical_gap/2 - target_height/2);
     
     textAlign(LEFT);
     push();
     rotate(-HALF_PI);
-    text("Tamanho da palavra", -(20 + target_height * 7), 60);
+    text("Ordem alfabética", -(vertical_gap/2 + target_height * 7), 60);
     textSize(35);
-    text("<------------------------------------------------", -(20 + target_height*10 - target_height/2), 3*target_width/4);
+    text("<----------------------------------------------", -(vertical_gap/2 + target_height*10 - target_height/2), 3*target_width/4);
     
     pop();
 
     // Draw all targets
-	  for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
+	for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
     var total_columns = 0;
     for (var j = 0; j < legendasPorPrefixos.length-4; j++){
-      var prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
+      var prefixo_atual;
+      if(j == 0){
+        prefixo_atual = legendasPorPrefixos[j][1].substring(0, 3);
+      }
+      else{
+        prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
+      }
       var rect_x = horizontal_gap/2 + target_width * (1 + total_columns);
       var rect_y = vertical_gap/2;
       var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 2;
@@ -181,6 +193,13 @@ function draw()
 
       total_columns += prefixos[prefixo_atual].num_columns;
     }
+    
+    stroke(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
+    strokeWeight(4);
+    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*5, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*5);
+    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*8, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*8);
+    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*9, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*9);
+    strokeWeight(0);
     
     textFont('monospace', 25);
     textStyle(BOLD);
@@ -332,8 +351,14 @@ function createTargets()
   let palavra_atual;
   for (var i = 0; i < legendasPorPrefixos.length - 5; i++)
   {
-    var prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
-
+    var prefixo_atual;
+    if(i == 0){
+      prefixo_atual = legendasPorPrefixos[i][0].substring(0, 3);
+    }
+    else{
+      prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
+    }
+    
     let c = 0;
     for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space; j++)
     { 
@@ -415,20 +440,18 @@ function ordenarPrefixos(){
   
   // Separa pelas primeiras 2 letras
   for(var i = 0; i < cities.length; i++){
-    legendasPorPrefixos[prefixos[cities[i].substring(0, 2)].key].push(cities[i]);
+    if(cities[i].substring(0,3) === 'Bar'){
+      legendasPorPrefixos[0].push(cities[i]);
+    }
+    else{
+       legendasPorPrefixos[prefixos[cities[i].substring(0, 2)].key].push(cities[i]); 
+    }
   }
 
   // Para cada prefixo...
   for(var j = 0; j < legendasPorPrefixos.length; j++){
     // ... ordena por tamanho e por ordem alfabética...
     legendasPorPrefixos[j].sort((a, b) => {
-      var tamanhoA = a.length;
-      var tamanhoB = b.length;
-  
-      if (tamanhoA !== tamanhoB) {
-        return tamanhoA - tamanhoB;
-      }
-  
       return a.localeCompare(b);
     });
 
