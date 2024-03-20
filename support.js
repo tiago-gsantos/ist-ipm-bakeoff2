@@ -13,16 +13,42 @@ function drawUserIDScreen()
   main_text.position(10, 10);
 
   // Segundo texto
-  let new_text = createP("Bem vindo/a ao nosso protótipo! Antes de carregares no primeiro target o tempo ainda não começou a contar, por isso, tens tempo para analisar o desenho. Os alvos estão orgazidos em secções tendo em conta o tamanho das primeiras duas letras. Boa sorte!");
+  let t1 = createP("Dicas:");
+  let t2 = createP("- Palavras estão separadas por prefixos das 2 primeiras letras");
+  let t3 = createP("- Dentro de cada prefixo, estão ordenadas alfabeticamente por linhas");
+  let t4 = createP("- Palavras com espaços estão na linha de baixo");
+  let t5 = createP("- A 2º, 3ª e 4ª letra de cada palavra estão destacadas");
+  let t6 = createP("- O tempo só começa quando clicas na primeira palavra");
   
-  new_text.position(10, 300);
-  new_text.style('color', 'white');
-  //new_text.style('text-align', 'center');
-  new_text.id('new_text');
-  new_text.style('font-size', '20px');
-  new_text.style('margin', '24px');
-  new_text.style('font-weight', 'lighter');
+  t1.position(325, 280);
+  t1.style('color', 'white');
+  t1.id('t1');
+  t1.style('font-size', '20px');
+  
+  t2.position(100, 320);
+  t2.style('color', 'white');
+  t2.id('t2');
+  t2.style('font-size', '20px');
+  
+  t3.position(70, 350);
+  t3.style('color', 'white');
+  t3.id('t3');
+  t3.style('font-size', '20px');
+  
+  t4.position(160, 380);
+  t4.style('color', 'red');
+  t4.id('t4');
+  t4.style('font-size', '20px');
+  
+  t5.position(140, 410);
+  t5.style('color', 'white');
+  t5.id('t5');
+  t5.style('font-size', '20px');
 
+  t6.position(120, 440);
+  t6.style('color', 'white');
+  t6.id('t6');
+  t6.style('font-size', '20px');
   
   
   // Input forms:
@@ -85,7 +111,12 @@ function startTest()
 
     // Deletes UI elements
     main_text.remove();
-    new_text.remove();
+    t1.remove();
+    t2.remove();
+    t3.remove();
+    t4.remove();
+    t5.remove();
+    t6.remove();
     student_ID_form.remove();
     student_ID_label.remove();
     display_size_form.remove();

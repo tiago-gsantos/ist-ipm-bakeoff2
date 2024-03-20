@@ -24,25 +24,40 @@ class Target
   // and its label
   draw()
   {
+    let display        = new Display({ diagonal: display_size }, window.screen);
+    let PPCM               = display.ppi / 2.54;
+    
     // Draw target
     stroke(255);
-    strokeWeight(1);
+    strokeWeight(0.02*PPCM);
     if(this.isclicked){
-      fill(color(80, 80, 80)); 
+      fill(color(40, 40, 40)); 
     }
     else{
       fill(color(0,0,0));  
     }
+    
     rect(this.x, this.y, this.width, this.height);
     strokeWeight(0);
     // Draw label
-    textFont('monospace', 13);
     textAlign(CENTER);
+    fill(255);
+    if(this.label.includes(" ")){
+      textFont('monospace', 0.38*PPCM);
+      fill(color(this.color.r, this.color.g, this.color.b));
+      text(this.label, this.x + this.width/2, this.y + this.height/2 + 5);
+      fill(255);
+      text("   " + this.label.substring(3), this.x + this.width/2, this.y + this.height/2 + 5);
+    }
+    else{
+      textFont('monospace', 0.34*PPCM);
+      
+      text(this.label, this.x + this.width/2, this.y + this.height - 0.2*PPCM);
     
-    fill(color(this.color.r, this.color.g, this.color.b));
-    text(this.label, this.x + this.width/2, this.y + this.height/2 + 5);
+      textSize(0.45*PPCM);
+      fill(color(this.color.r, this.color.g, this.color.b));
+      text(this.label.substring(1,4).toUpperCase(), this.x + this.width/2, this.y + this.height - 0.7*PPCM)
+    }
     
-    fill(color(255, 255, 255));
-    text("   " + this.label.substring(3), this.x + this.width/2, this.y + this.height/2 + 5);
   }
 }

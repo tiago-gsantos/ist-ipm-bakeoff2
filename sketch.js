@@ -6,8 +6,8 @@
 // p5.js reference: https://p5js.org/reference/
 
 // Database (CHANGE THESE!)
-const GROUP_NUMBER        = 0;      // Add your group number here as an integer (e.g., 2, 3)
-const RECORD_TO_FIREBASE  = false;  // Set to 'true' to record user results to Firebase
+const GROUP_NUMBER        = 42;      // Add your group number here as an integer (e.g., 2, 3)
+const RECORD_TO_FIREBASE  = true;  // Set to 'true' to record user results to Firebase
 
 // Pixel density and setup variables (DO NOT CHANGE!)
 let PPI, PPCM;
@@ -30,83 +30,77 @@ let attempt               = 0;      // users complete each test twice to account
 // Target list and layout variables
 let targets               = [];
 const GRID_ROWS           = 11;      // We divide our 80 targets in a 8x10 grid
-const GRID_COLUMNS        = 11;     // We divide our 80 targets in a 8x10 grid
-let target_width = 2.5;
+const GRID_COLUMNS        = 10;     // We divide our 80 targets in a 8x10 grid
+let target_width = 2.8;
 let target_height = 1.3;
 let horizontal_gap;
 let vertical_gap;
 
 // Variáveis para as legendas
-let legendasPorPrefixos = Array.from({ length: 11 }, () => []);
+let legendasPorPrefixos = Array.from({ length: 10 }, () => []);
 const prefixos = {
-  'Bar': {
-          'key': 0,
-          'num_columns': 1,
-          'color': {'r': 255, 'g': 255, 'b': 0},
-          'num_space': 0
-        },
   'Ba': {
-          'key': 1,
-          'num_columns': 2,
+          'key': 0,
+          'num_columns': 3,
           'color': {'r': 255, 'g': 255, 'b': 0},
           'num_space': 2
         },
   'Br': {
-          'key': 5,
+          'key': 4,
           'num_columns': 2,
           'color': {'r': 0, 'g': 230, 'b': 255},
           'num_space': 0
         },
   'Be': {
-          'key': 2,
+          'key': 1,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Bé': {
-          'key': 2,
+          'key': 1,
           'num_columns': 2,
           'color': {'r': 255, 'g': 153, 'b': 51},
           'num_space': 0
         },
   'Bu': {
-          'key': 4,
+          'key': 3,
           'num_columns': 1,
           'color': {'r': 255, 'g': 0, 'b': 255},
           'num_space': 1
         },
   'Bi': {
-          'key': 3,
+          'key': 2,
           'num_columns': 1,
           'color': {'r': 255, 'g': 0, 'b': 0},
           'num_space': 1
         },
   'Bo': {
-          'key': 6,
+          'key': 5,
           'num_columns': 1,
           'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'Bh': {
-          'key': 7,
+          'key': 6,
           'num_columns': 1,
           'color': {'r': 230, 'g': 0, 'b': 109},
+          'num_space': 0
+        },
+  'Bl': {
+          'key': 7,
+          'num_columns': 1,
+          'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 0
         },
   'By': {
           'key': 8,
           'num_columns': 1,
-          'color': {'r': 45, 'g': 255, 'b': 45},
-          'num_space': 0
-        },
-  'Bl': {
-          'key': 9,
-          'num_columns': 1,
           'color': {'r': 230, 'g': 0, 'b': 109},
           'num_space': 0
         },
   'Bn': {
-          'key': 10,
+          'key': 9,
           'num_columns': 1,
           'color': {'r': 45, 'g': 255, 'b': 45},
           'num_space': 1
@@ -147,70 +141,51 @@ function draw()
     fill(color(255,255,255));
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
-    
-    textStyle(BOLD);
-    textSize(17);
-    textAlign(CENTER);
-    text("Palavras\ncom Espaços", horizontal_gap/2 + target_width/2, height - vertical_gap/2 - target_height/2);
-    
-    textAlign(LEFT);
-    push();
-    rotate(-HALF_PI);
-    text("Ordem alfabética", -(vertical_gap/2 + target_height * 7), 60);
-    textSize(35);
-    text("<----------------------------------------------", -(vertical_gap/2 + target_height*10 - target_height/2), 3*target_width/4);
-    
-    pop();
 
     // Draw all targets
 	for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
     var total_columns = 0;
     for (var j = 0; j < legendasPorPrefixos.length-4; j++){
-      var prefixo_atual;
-      if(j == 0){
-        prefixo_atual = legendasPorPrefixos[j][1].substring(0, 3);
-      }
-      else{
-        prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
-      }
-      var rect_x = horizontal_gap/2 + target_width * (1 + total_columns);
+      var prefixo_atual = legendasPorPrefixos[j][1].substring(0, 2);
+
+      var rect_x = horizontal_gap/2 + target_width * total_columns;
       var rect_y = vertical_gap/2;
       var rect_width = (target_width * prefixos[prefixo_atual].num_columns) - 2;
       var rect_height = target_height * 11;
       noFill();
       stroke(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b));
-      strokeWeight(4);
+      strokeWeight(0.1*PPCM);
       rect(rect_x, rect_y, rect_width, rect_height);
 
       rect(rect_x, rect_y + target_height, rect_width, rect_height - 2*target_height + 1);
-      stroke(0);
+      strokeWeight(0);
       
       if(j != legendasPorPrefixos.length - 5){
         fill(color(prefixos[prefixo_atual].color.r, prefixos[prefixo_atual].color.g, prefixos[prefixo_atual].color.b));
-        textFont('monospace', 35);
+        textFont('monospace', 0.8*PPCM);
         textStyle(BOLD);
         textAlign(CENTER);
-        text(prefixo_atual, ((total_columns+1) * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 + 15);
+        text(prefixo_atual, (total_columns * target_width) + (prefixos[prefixo_atual].num_columns * target_width)/2 + horizontal_gap/2, vertical_gap/2 + target_height*2/3);
       }
 
       total_columns += prefixos[prefixo_atual].num_columns;
     }
     
     stroke(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
-    strokeWeight(4);
-    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*5, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*5);
-    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*8, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*8);
-    line(horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*9, horizontal_gap/2 + target_width*11, vertical_gap/2 + target_height*9);
+    strokeWeight(0.1*PPCM);
+    line(horizontal_gap/2 + target_width*9, vertical_gap/2 + target_height*5, horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*5);
+    line(horizontal_gap/2 + target_width*9, vertical_gap/2 + target_height*8, horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*8);
+    line(horizontal_gap/2 + target_width*9, vertical_gap/2 + target_height*9, horizontal_gap/2 + target_width*10, vertical_gap/2 + target_height*9);
     strokeWeight(0);
     
-    textFont('monospace', 23);
+    textFont('monospace', 0.5*PPCM);
     textStyle(BOLD);
     textAlign(CENTER);
     fill(color(prefixos.Bo.color.r, prefixos.Bo.color.g, prefixos.Bo.color.b));
-    text("Bo Bh By\nBl Bn", (10 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 -5);
+    text("Bo Bh By\nBl Bn", (9 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height*2/5);
     fill(color(prefixos.Bh.color.r, prefixos.Bh.color.g, prefixos.Bh.color.b));
-    text("   Bh   \nBl   ", (10 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height/2 -5);
+    text("   Bh   \nBl   ", (9 * target_width) + target_width/2 + horizontal_gap/2, vertical_gap/2 + target_height*2/5);
 
     fill(color(0,0,0));
     rect(0, height - 40, width, 40);
@@ -349,19 +324,13 @@ function continueTest()
 // Creates and positions the UI targets
 function createTargets()
 { 
-  let target_x = target_width + horizontal_gap/2;
+  let target_x = horizontal_gap/2;
   let target_y = target_height + vertical_gap/2;
   let total_columns = 0;
   let palavra_atual;
   for (var i = 0; i < legendasPorPrefixos.length - 5; i++)
   {
-    var prefixo_atual;
-    if(i == 0){
-      prefixo_atual = legendasPorPrefixos[i][0].substring(0, 3);
-    }
-    else{
-      prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
-    }
+    var prefixo_atual = legendasPorPrefixos[i][0].substring(0, 2);
     
     let c = 0;
     for (var j = 0; j < legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space; j++)
@@ -379,7 +348,7 @@ function createTargets()
     //let screen_height  = display.height * 2.54
     target_y = vertical_gap/2 + target_height * 10
     c = 0
-    target_x = horizontal_gap/2 + target_width * (total_columns + 1)
+    target_x = horizontal_gap/2 + target_width * total_columns;
     for(var k = 0; k < prefixos[prefixo_atual].num_space; k++){
       palavra_atual = legendasPorPrefixos[i][legendasPorPrefixos[i].length - prefixos[prefixo_atual].num_space + k];
       let target = new Target(target_x + target_width * c, target_y, target_width, target_height, palavra_atual,prefixos[prefixo_atual].color, searchID(palavra_atual));
@@ -388,10 +357,10 @@ function createTargets()
     }
     total_columns += prefixos[prefixo_atual].num_columns;
     target_y = target_height + vertical_gap/2;
-    target_x = horizontal_gap/2 + target_width * (total_columns + 1);
+    target_x = horizontal_gap/2 + target_width * total_columns;
   }
   
-  target_x = horizontal_gap/2 + target_width * 10;
+  target_x = horizontal_gap/2 + target_width * 9;
   target_y = vertical_gap/2 + target_height;
 
   for (var l = legendasPorPrefixos.length - 5; l < legendasPorPrefixos.length; l++)
@@ -444,12 +413,7 @@ function ordenarPrefixos(){
   
   // Separa pelas primeiras 2 letras
   for(var i = 0; i < cities.length; i++){
-    if(cities[i].substring(0,3) === 'Bar'){
-      legendasPorPrefixos[0].push(cities[i]);
-    }
-    else{
-       legendasPorPrefixos[prefixos[cities[i].substring(0, 2)].key].push(cities[i]); 
-    }
+    legendasPorPrefixos[prefixos[cities[i].substring(0, 2)].key].push(cities[i]); 
   }
 
   // Para cada prefixo...
